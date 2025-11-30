@@ -31,7 +31,7 @@ namespace App.Models
         public required Category Category { get; set; }
 
         [JsonPropertyName("tags")]
-        public string? Tags { get; set; }
+        public string[]? Tags { get; set; }
 
         [JsonPropertyName("author_id")]
         public required string AuthorId { get; set; }
