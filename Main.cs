@@ -1,12 +1,17 @@
 using App.Database;
+using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
+
+Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("NeonConnection"));
+    options.UseNpgsql(
+        Env.GetString("NEON_CONNECTION") ?? Environment.GetEnvironmentVariable("NEON_CONNECTION")
+    );
     options.UseSnakeCaseNamingConvention();
 });
 
