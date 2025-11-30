@@ -42,4 +42,11 @@ namespace App.Models
         [JsonPropertyName("updated_at")]
         public DateTime? UpdatedAt { get; set; }
     }
+
+    public class BlogFilter
+    {
+        public string? Term { get; set; }
+        public string? Title { get; set; }
+        public string? Category { get; set; }
+    }
 }

@@ -12,9 +12,24 @@ public class BlogController(ApplicationDbContext context) : ControllerBase
     private readonly ApplicationDbContext _context = context;
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Blog>>> GetBlogs()
+    public async Task<ActionResult<IEnumerable<Blog>>> GetBlogs([FromQuery] BlogFilter filter)
     {
-        return await _context.Blogs.ToListAsync();
+        var query = _context.Blogs.AsQueryable();
+
+        if (!string.IsNullOrEmpty(filter.Term))
+        {
+            query = query.Where(b => b.Tags.Contains(filter.Term));
+        }
+        if (!string.IsNullOrEmpty(filter.Title))
+        {
+            query = query.Where(b => b.Title.Contains(filter.Title));
+        }
+        if (!string.IsNullOrEmpty(filter.Category))
+        {
+            query = query.Where(b => b.Category.ToString() == filter.Category);
+        }
+
+        return await query.ToListAsync();
     }
 
     [HttpGet("{id}")]
